@@ -6,7 +6,7 @@ router = APIRouter()
 
 @router.post("/play-pause")
 def play_pause():
-  keyboard.send("space")
+  keyboard.send("play/pause media")
   return {"ok": True}
 
 @router.post("/seek/forward")
