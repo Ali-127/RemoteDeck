@@ -1,0 +1,17 @@
+remote-control/
+│
+├── backend/
+│   ├── main.py                 # FastAPI app instance, CORS setup, includes the routers below
+│   ├── routers/
+│   │   ├── media.py             # /play-pause, /seek/forward, /seek/backward, /subtitle/* endpoints
+│   │   └── volume.py             # /volume/up, /volume/down endpoints
+│   ├── requirements.txt         # fastapi, uvicorn, keyboard, pycaw, comtypes
+│   └── .gitignore                # ignore venv/, __pycache__/
+│
+└── frontend/
+    ├── app/
+    │   └── page.tsx              # the one screen — grid of control buttons
+    ├── lib/
+    │   └── api.ts                 # PC_IP constant + sendCommand() fetch helper
+    ├── package.json
+    └── .env.local                  # NEXT_PUBLIC_PC_IP=http://192.168.1.X:8000
