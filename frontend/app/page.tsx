@@ -2,9 +2,8 @@
 import { sendCommand } from "@/lib/api";
 
 export default function Home() {
-  console.log(sendCommand)
   return (
-    <main className="grid grid-cols-2 gap-4 p-4">
+    <main className="grid grid-cols-1 gap-4 p-4">
       <button onClick={() => sendCommand("/play-pause")}>⏯ Play/Pause</button>
       <button onClick={() => sendCommand("/seek/backward")}>⏪ Back</button>
       <button onClick={() => sendCommand("/seek/forward")}>⏩ Forward</button>
