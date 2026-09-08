@@ -1,3 +1,7 @@
 venv/
 __pycache__/
 *.log
+dist/
+output/
+build/
+RemoteDeckServer.spec

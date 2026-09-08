@@ -1,3 +1,4 @@
+import logging
 import threading
 import uvicorn
 from PIL import Image, ImageDraw
@@ -12,7 +13,10 @@ def create_icon_image():
   return image
 
 def run_server():
-  uvicorn.run(app=app, host="0.0.0.0", port=8000, log_level="info")
+  try:
+    uvicorn.run(app=app, host="0.0.0.0", port=8910, log_level="info", log_config=None)
+  except Exception as e:
+    logging.error(f"Server thread crashed: {e}", exc_info=True)
 
 def quit_app(icon, item):
   icon.stop()
