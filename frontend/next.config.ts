@@ -1,9 +1,21 @@
-import type { NextConfig } from "next";
+// import type { NextConfig } from "next";
+import os from "os"
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
-module.exports = {
-  allowedDevOrigins: ['192.168.1.6'],
+function getLocalIPs(): string[] {
+  const interfaces = os.networkInterfaces();
+  const ips: string[] = [];
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name] ?? []) {
+      if (iface.family === "IPv4" && !iface.internal) {
+        ips.push(iface.address);
+      }
+    }
+  }
+  return ips;
 }
-export default nextConfig;
+
+// const nextConfig: NextConfig = {};
+
+module.exports = {
+  allowedDevOrigins: getLocalIPs(),
+}
