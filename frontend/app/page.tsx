@@ -66,7 +66,14 @@ export default function Home() {
       setLastAction("Connection failed"),
     );
   }, [pcUrl]);
-  if (!pcUrl) return <PairingScanner onPaired={setPairedPcUrl} />;
+  if (!pcUrl) {
+    return (
+      <>
+        <ServiceWorkerRegistration />
+        <PairingScanner onPaired={setPairedPcUrl} />
+      </>
+    );
+  }
   return (
     <main className="remote-page">
       <ServiceWorkerRegistration />
