@@ -1,10 +1,13 @@
 "use client";
 
 import PairingScanner from "@/components/PairingScanner";
+import InstallPrompt from "@/components/InstallPrompt";
+import MediaSession from "@/components/MediaSession";
+import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
 import VolumeWheel from "@/components/VolumeWheel";
 import { sendCommand } from "@/lib/api";
-import { getSavedPcUrl } from "@/lib/pairing";
-import { useState, type ReactNode } from "react";
+import { getSavedPcUrl, savePcUrl, verifyPairing } from "@/lib/pairing";
+import { useCallback, useEffect, useState, useSyncExternalStore, type ReactNode } from "react";
 
 type CommandButtonProps = {
   label: string;
@@ -12,6 +15,12 @@ type CommandButtonProps = {
   onClick: () => void;
   primary?: boolean;
 };
+
+const subscribeToPairing = () => () => {};
+
+function getPcUrlFromPage() {
+  return getSavedPcUrl();
+}
 
 function CommandButton({
   label,
@@ -32,18 +41,36 @@ function CommandButton({
 }
 
 export default function Home() {
-  const [pcUrl, setPcUrl] = useState<string | null>(() => getSavedPcUrl());
+  const storedPcUrl = useSyncExternalStore(subscribeToPairing, getPcUrlFromPage, () => null);
+  const [pairedPcUrl, setPairedPcUrl] = useState<string | null>(null);
   const [lastAction, setLastAction] = useState("Ready");
-  function command(path: string, label: string) {
+  const pcUrl = pairedPcUrl ?? storedPcUrl;
+
+  useEffect(() => {
+    const hostname = window.location.hostname;
+    if (hostname === "localhost" || hostname === "127.0.0.1") return;
+
+    // The tray QR opens this page at the PC's LAN address. The API always
+    // runs on port 8910 of that same host, so no address has to be typed.
+    const discoveredPcUrl = `http://${hostname}:8910`;
+    void verifyPairing(discoveredPcUrl).then((isRemoteDeck) => {
+      if (!isRemoteDeck) return;
+      savePcUrl(discoveredPcUrl);
+      setPairedPcUrl(discoveredPcUrl);
+    });
+  }, []);
+  const command = useCallback((path: string, label: string) => {
     if (!pcUrl) return;
     setLastAction(label);
     void sendCommand(pcUrl, path).catch(() =>
       setLastAction("Connection failed"),
     );
-  }
-  if (!pcUrl) return <PairingScanner onPaired={setPcUrl} />;
+  }, [pcUrl]);
+  if (!pcUrl) return <PairingScanner onPaired={setPairedPcUrl} />;
   return (
     <main className="remote-page">
+      <ServiceWorkerRegistration />
+      <MediaSession onCommand={command} />
       <section className="remote-shell" aria-label="Remote controls">
         <header className="flex items-center justify-between border-b border-white/10 px-6 py-5">
           <div>
@@ -116,6 +143,7 @@ export default function Home() {
           aria-live="polite"
         >
           {lastAction}
+          <InstallPrompt />
         </footer>
       </section>
     </main>

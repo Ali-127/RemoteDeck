@@ -1,4 +1,5 @@
 import socket
+import os
 import qrcode
 
 def get_local_ip() -> str:
@@ -12,6 +13,11 @@ def get_local_ip() -> str:
 
 def build_pairing_url(port: int = 8910) -> str:
   return f"http://{get_local_ip()}:{port}"
+
+def build_remote_url(frontend_port: int = 3000) -> str:
+  """Build the clean, phone-facing URL displayed in the tray QR code."""
+  scheme = os.getenv("REMOTEDECK_FRONTEND_SCHEME", "https")
+  return f"{scheme}://{get_local_ip()}:{frontend_port}"
 
 def make_qr_image(url: str):
   qr = qrcode.QRCode(

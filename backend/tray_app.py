@@ -5,7 +5,7 @@ import uvicorn
 from PIL import Image, ImageDraw, ImageTk #type:ignore
 import pystray #type:ignore
 import tkinter as tk
-from pairing import build_pairing_url, make_qr_image
+from pairing import build_remote_url, make_qr_image
 
 from main import app
 
@@ -20,7 +20,7 @@ def show_pairing_window(icon, item):
 
 def create_pairing_window():
   """Create the QR window on Tkinter's owning thread."""
-  url = build_pairing_url(port=8910)
+  url = build_remote_url(frontend_port=3000)
   img = make_qr_image(url=url)
 
   if root is None:
