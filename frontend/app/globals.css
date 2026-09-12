@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #08111f;
+  --foreground: #f8fafc;
 }
 
 @theme inline {
@@ -12,15 +12,20 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.remote-page { display: grid; min-height: 100dvh; place-items: center; padding: 1rem; background: radial-gradient(circle at 12% 10%, rgb(6 182 212 / 0.18), transparent 28rem), radial-gradient(circle at 85% 90%, rgb(79 70 229 / 0.2), transparent 25rem), #08111f; }
+.remote-shell { width: min(100%, 42rem); overflow: hidden; border: 1px solid rgb(148 163 184 / 0.18); border-radius: 1.75rem; background: rgb(15 23 42 / 0.82); box-shadow: 0 2rem 5rem rgb(0 0 0 / 0.36); backdrop-filter: blur(1.25rem); }
+.section-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #94a3b8; }
+.connection-pill { display: inline-flex; align-items: center; gap: 0.45rem; border-radius: 999px; background: rgb(16 185 129 / 0.12); padding: 0.4rem 0.7rem; font-size: 0.75rem; font-weight: 600; color: #a7f3d0; }
+.connection-pill span { width: 0.45rem; height: 0.45rem; border-radius: 999px; background: #34d399; box-shadow: 0 0 0.65rem #34d399; }
+.remote-button, .mini-control { display: flex; min-height: 5.75rem; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem; border: 1px solid rgb(148 163 184 / 0.18); border-radius: 1.15rem; background: rgb(30 41 59 / 0.72); color: #e2e8f0; font-size: 0.72rem; font-weight: 600; transition: transform 150ms ease, background 150ms ease, border-color 150ms ease; }
+.remote-button:hover, .mini-control:hover { background: rgb(51 65 85 / 0.92); }.remote-button:active, .mini-control:active { transform: scale(0.96); }.remote-button:focus-visible, .mini-control:focus-visible, .volume-wheel:focus-visible { outline: 2px solid #67e8f9; outline-offset: 3px; }
+.remote-button-primary { border-color: rgb(34 211 238 / 0.55); background: linear-gradient(145deg, #0891b2, #155e75); color: white; box-shadow: 0 0.75rem 1.75rem rgb(6 182 212 / 0.2); }
+.volume-panel { border: 1px solid rgb(148 163 184 / 0.15); border-radius: 1.25rem; background: rgb(2 6 23 / 0.25); padding: 1rem; }
+.volume-wheel { position: relative; display: grid; width: 8.25rem; aspect-ratio: 1; margin-inline: auto; place-items: center; overflow: hidden; border: 0; border-radius: 999px; background: linear-gradient(145deg, #334155, #0f172a); box-shadow: inset 0 0 0 0.45rem #1e293b, inset 0 0 0 0.6rem rgb(148 163 184 / 0.16), 0 0.85rem 1.5rem rgb(0 0 0 / 0.25); touch-action: none; cursor: ns-resize; }
+.volume-wheel-active { transform: scale(0.98); }.volume-wheel-ridges { position: absolute; inset: 0; opacity: 0.5; background: repeating-conic-gradient(from 2deg, transparent 0deg 5deg, rgb(148 163 184 / 0.35) 5deg 7deg); }.volume-wheel-center { position: relative; display: grid; width: 4.1rem; aspect-ratio: 1; place-items: center; border-radius: 999px; background: #0f172a; color: #67e8f9; box-shadow: 0 0.4rem 0.75rem rgb(0 0 0 / 0.35); }.volume-wheel-center svg { width: 1.8rem; }.mini-control { min-height: 2.5rem; border-radius: 0.75rem; font-size: 1.25rem; }
